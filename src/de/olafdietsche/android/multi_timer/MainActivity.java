@@ -9,6 +9,9 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -30,6 +33,24 @@ public class MainActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		updateTimerList(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_add_timer:
+			AddTimerActivity.start(this);
+			return true;
+		}
+
+		return false;
 	}
 
 	private void updateTimerList(final Context context) {

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/timername"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"/>
+
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal">
+
+            <EditText android:id="@+id/timerduration_hours"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:hint="H"
+                      android:inputType="number"
+                      android:singleLine="true"
+                      android:ems="2"
+                      android:maxLength="2"/>
+
+            <EditText android:id="@+id/timerduration_minutes"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:hint="M"
+                      android:inputType="number"
+                      android:singleLine="true"
+                      android:ems="2"
+                      android:maxLength="2"/>
+
+            <EditText android:id="@+id/timerduration_seconds"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:hint="S"
+                      android:inputType="number"
+                      android:singleLine="true"
+                      android:ems="2"
+                      android:maxLength="2"/>
+        </LinearLayout>
+
+        <Button android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_save"
+                android:textStyle="bold"
+                android:onClick="addTimer"/>
+    </LinearLayout>
+</ScrollView>
