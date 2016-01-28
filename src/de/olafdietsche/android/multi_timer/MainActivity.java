@@ -9,9 +9,11 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -51,6 +53,36 @@ public class MainActivity extends Activity {
 		}
 
 		return false;
+	}
+
+	public void startTimer(View view) {
+		Log.d(TAG, "startTimer");
+		TimerEntry tv = getHolder(view);
+		tv.startTimer();
+	}
+
+	public void stopTimer(View view) {
+		Log.d(TAG, "stopTimer");
+		TimerEntry tv = getHolder(view);
+		tv.stopTimer();
+	}
+
+	public void pauseTimer(View view) {
+		Log.d(TAG, "pauseTimer");
+		TimerEntry tv = getHolder(view);
+		tv.pauseTimer();
+	}
+
+	public void resumeTimer(View view) {
+		Log.d(TAG, "resumeTimer");
+		TimerEntry tv = getHolder(view);
+		tv.resumeTimer();
+	}
+
+	private TimerEntry getHolder(View view) {
+		View parent = (View) view.getParent();
+		TimerEntry tv = (TimerEntry) parent.getTag();
+		return tv;
 	}
 
 	private void updateTimerList(final Context context) {

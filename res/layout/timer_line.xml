@@ -4,29 +4,45 @@
                 android:layout_height="wrap_content">
 
         <TextView android:id="@+id/timername"
-                  android:layout_width="1dp"
+                  android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layout_alignParentLeft="true"
                   android:layout_weight="1"/>
 
         <TextView android:id="@+id/timerduration"
-                  android:layout_width="1dp"
+                  android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layout_below="@id/timername"
                   android:layout_weight="1"/>
 
         <Button android:id="@+id/timerstart"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:text="@string/action_start"
+                android:onClick="startTimer"/>
 
         <Button android:id="@+id/timerstop"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:text="@string/action_stop"
+                android:onClick="stopTimer"
                 android:visibility="gone"/>
 
         <Button android:id="@+id/timerpause"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@id/timerstop"
+                android:text="@string/action_pause"
+                android:onClick="pauseTimer"
+                android:visibility="gone"/>
+
+        <Button android:id="@+id/timerresume"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/timerstop"
+                android:text="@string/action_resume"
+                android:onClick="resumeTimer"
                 android:visibility="gone"/>
 </RelativeLayout>

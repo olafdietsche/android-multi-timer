@@ -20,14 +20,14 @@ public class TimerCursorAdapter extends ResourceCursorAdapter {
 
 	@Override
 	public void bindView (View view, Context context, Cursor cursor) {
-		TextView tv;
+		TimerEntry tv = new TimerEntry(view);
+		view.setTag(tv);
+
 		String timername = cursor.getString(timernameIndex);
-		tv = (TextView) view.findViewById(R.id.timername);
-		tv.setText(timername);
+		tv.setName(timername);
 
 		String timerduration = cursor.getString(timerdurationIndex);
-		tv = (TextView) view.findViewById(R.id.timerduration);
-		tv.setText(timerduration);
+		tv.setDuration(Long.parseLong(timerduration));
 	}
 
 	private final int timernameIndex = 1, timerdurationIndex = 2;
