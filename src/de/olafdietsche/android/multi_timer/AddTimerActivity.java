@@ -16,10 +16,10 @@ public class AddTimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_timer);
-        timername_ = (EditText) findViewById(R.id.timername);
-        timerdurationHours_ = (EditText) findViewById(R.id.timerduration_hours);
-        timerdurationMinutes_ = (EditText) findViewById(R.id.timerduration_minutes);
-        timerdurationSeconds_ = (EditText) findViewById(R.id.timerduration_seconds);
+		timername_ = (EditText) findViewById(R.id.timername);
+		timerdurationHours_ = (EditText) findViewById(R.id.timerduration_hours);
+		timerdurationMinutes_ = (EditText) findViewById(R.id.timerduration_minutes);
+		timerdurationSeconds_ = (EditText) findViewById(R.id.timerduration_seconds);
 	}
 
 	public void addTimer(View view) {
@@ -30,18 +30,18 @@ public class AddTimerActivity extends Activity {
 		String s = timername_.getText().toString();
 		values.put(TimerTableHelper.COLUMN_NAME_TIMERNAME, s);
 
-        long duration = 0;
-        s = timerdurationHours_.getText().toString();
-        if (s.length() > 0)
-            duration += Long.parseLong(s) * 3600;
+		long duration = 0;
+		s = timerdurationHours_.getText().toString();
+		if (s.length() > 0)
+			duration += Long.parseLong(s) * 3600;
 
-        s = timerdurationMinutes_.getText().toString();
-        if (s.length() > 0)
-            duration += Long.parseLong(s) * 60;
+		s = timerdurationMinutes_.getText().toString();
+		if (s.length() > 0)
+			duration += Long.parseLong(s) * 60;
 
-        s = timerdurationSeconds_.getText().toString();
-        if (s.length() > 0)
-            duration += Long.parseLong(s);
+		s = timerdurationSeconds_.getText().toString();
+		if (s.length() > 0)
+			duration += Long.parseLong(s);
 
 		values.put(TimerTableHelper.COLUMN_NAME_TIMERDURATION, duration);
 
