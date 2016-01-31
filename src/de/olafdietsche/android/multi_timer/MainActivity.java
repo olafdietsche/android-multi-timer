@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateTimerList(this);
+		fillTimerList(this);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
 		return tv;
 	}
 
-	private void updateTimerList(final Context context) {
+	private void fillTimerList(final Context context) {
 		AsyncTask<Void, Void, Cursor> task = new AsyncTask<Void, Void, Cursor>() {
 			@Override
 			protected Cursor doInBackground(Void... unused) {

@@ -37,6 +37,7 @@ public class TimerEntry {
 		timerstart.setVisibility(View.GONE);
 		timerstop.setVisibility(View.VISIBLE);
 		timerpause.setVisibility(View.VISIBLE);
+		running = true;
 	}
 
 	public void stopTimer() {
@@ -44,27 +45,31 @@ public class TimerEntry {
 		timerstop.setVisibility(View.GONE);
 		timerpause.setVisibility(View.GONE);
 		timerresume.setVisibility(View.GONE);
+		running = false;
 	}
 
 	public void pauseTimer() {
 		timerpause.setVisibility(View.GONE);
 		timerresume.setVisibility(View.VISIBLE);
+		pausing = true;
 	}
 
 	public void resumeTimer() {
 		timerpause.setVisibility(View.VISIBLE);
 		timerresume.setVisibility(View.GONE);
+		pausing = false;
 	}
 
 	public void displayDuration(long duration) {
-		long secs = duration % 60;
-		long mins = (duration / 60) % 60;
 		long hours = duration / 3600;
+		long secs = Math.abs(duration) % 60;
+		long mins = (Math.abs(duration) / 60) % 60;
 		String s = String.format("%d:%02d:%02d", hours, mins, secs);
 		timerduration.setText(s);
 	}
 
 	private long duration, remaining;
+	private boolean running, pausing;
 	private TextView timername, timerduration;
 	private Button timerstart, timerstop, timerpause, timerresume;
 }
