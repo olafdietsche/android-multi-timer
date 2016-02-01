@@ -28,7 +28,7 @@ public class AddTimerActivity extends Activity {
 		ContentValues values = new ContentValues(2);
 
 		String s = timername_.getText().toString();
-		values.put(TimerTableHelper.COLUMN_NAME_TIMERNAME, s);
+		values.put(TimerTableHelper.COLUMN_NAME_NAME, s);
 
 		long duration = 0;
 		s = timerdurationHours_.getText().toString();
@@ -43,7 +43,7 @@ public class AddTimerActivity extends Activity {
 		if (s.length() > 0)
 			duration += Long.parseLong(s);
 
-		values.put(TimerTableHelper.COLUMN_NAME_TIMERDURATION, duration);
+		values.put(TimerTableHelper.COLUMN_NAME_DURATION, duration);
 
 		helper.insert(values);
 		helper.close();

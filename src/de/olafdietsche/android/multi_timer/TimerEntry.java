@@ -78,14 +78,13 @@ public class TimerEntry {
 	}
 
 	public void displayDuration(long duration) {
-		long hours = duration / 3600;
+		long hours = Math.abs(duration / 3600);
 		long secs = Math.abs(duration) % 60;
 		long mins = (Math.abs(duration) / 60) % 60;
 		String s = String.format("%d:%02d:%02d", hours, mins, secs);
 		timerduration.setText(s);
-		if (duration <= 0) {
+		if (duration <= 0)
 			timerduration.setTextColor(overdue_color);
-		}
 	}
 
 	private long duration, remaining, deadline;

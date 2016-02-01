@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
 			protected Cursor doInBackground(Void... unused) {
 				DatabaseHelper db = new DatabaseHelper(context);
 				TimerTableHelper helper = new TimerTableHelper(db);
-				Cursor cursor = helper.query(projection_, null, null, "timername desc");
+				Cursor cursor = helper.query(projection_, null, null, TimerTableHelper.COLUMN_NAME_NAME);
 				return cursor;
 			}
 
@@ -152,8 +152,8 @@ public class MainActivity extends Activity {
 	private CursorAdapter adapter_;
 	private static final String[] projection_ = new String[] {
 		BaseColumns._ID,
-		TimerTableHelper.COLUMN_NAME_TIMERNAME,
-		TimerTableHelper.COLUMN_NAME_TIMERDURATION
+		TimerTableHelper.COLUMN_NAME_NAME,
+		TimerTableHelper.COLUMN_NAME_DURATION
 	};
 
 	private static final String TAG = MainActivity.class.getName();

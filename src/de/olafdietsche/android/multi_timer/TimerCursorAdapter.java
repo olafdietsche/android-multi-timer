@@ -16,8 +16,8 @@ public class TimerCursorAdapter extends ResourceCursorAdapter {
 		Resources resources = context.getResources();
 		overdue_color = resources.getColor(R.color.timer_overdue);
 /* FIXME
-		timernameIndex = cursor.getColumnIndex(TimerTableHelper.COLUMN_NAME_NAME);
-		timerdurationIndex = cursor.getColumnIndex(TimerTableHelper.COLUMN_NAME_DURATION
+		nameIndex = cursor.getColumnIndex(TimerTableHelper.COLUMN_NAME_NAME);
+		durationIndex = cursor.getColumnIndex(TimerTableHelper.COLUMN_NAME_DURATION
 */
 	}
 
@@ -26,13 +26,13 @@ public class TimerCursorAdapter extends ResourceCursorAdapter {
 		TimerEntry te = new TimerEntry(view, overdue_color);
 		view.setTag(te);
 
-		String timername = cursor.getString(timernameIndex);
-		te.setName(timername);
+		String name = cursor.getString(nameIndex);
+		te.setName(name);
 
-		String timerduration = cursor.getString(timerdurationIndex);
-		te.setDuration(Long.parseLong(timerduration));
+		String duration = cursor.getString(durationIndex);
+		te.setDuration(Long.parseLong(duration));
 	}
 
 	private int overdue_color;
-	private final int timernameIndex = 1, timerdurationIndex = 2;
+	private final int nameIndex = 1, durationIndex = 2;
 }
