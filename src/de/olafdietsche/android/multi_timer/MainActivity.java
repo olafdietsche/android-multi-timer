@@ -8,6 +8,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import android.widget.ListView;
 import de.olafdietsche.net.SimpleHttpClient;
 
 public class MainActivity extends Activity {
+	private static final int MSG_UPDATE = 1;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,12 +33,27 @@ public class MainActivity extends Activity {
 
 		adapter_ = new TimerCursorAdapter(this, null);
 		list.setAdapter(adapter_);
+		updateHandler = new Handler() {
+			@Override
+			public void handleMessage(Message m) {
+				boolean cont = updateTimerEntries();
+				if (cont)
+					startTimerUpdate();
+			}
+		};
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		fillTimerList(this);
+		startTimerUpdate();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		stopTimerUpdate();
 	}
 
 	@Override
@@ -57,32 +76,34 @@ public class MainActivity extends Activity {
 
 	public void startTimer(View view) {
 		Log.d(TAG, "startTimer");
-		TimerEntry tv = getHolder(view);
-		tv.startTimer();
+		TimerEntry te = getHolder(view);
+		te.startTimer();
+		startTimerUpdate();
 	}
 
 	public void stopTimer(View view) {
 		Log.d(TAG, "stopTimer");
-		TimerEntry tv = getHolder(view);
-		tv.stopTimer();
+		TimerEntry te = getHolder(view);
+		te.stopTimer();
 	}
 
 	public void pauseTimer(View view) {
 		Log.d(TAG, "pauseTimer");
-		TimerEntry tv = getHolder(view);
-		tv.pauseTimer();
+		TimerEntry te = getHolder(view);
+		te.pauseTimer();
 	}
 
 	public void resumeTimer(View view) {
 		Log.d(TAG, "resumeTimer");
-		TimerEntry tv = getHolder(view);
-		tv.resumeTimer();
+		TimerEntry te = getHolder(view);
+		te.resumeTimer();
+		startTimerUpdate();
 	}
 
 	private TimerEntry getHolder(View view) {
 		View parent = (View) view.getParent();
-		TimerEntry tv = (TimerEntry) parent.getTag();
-		return tv;
+		TimerEntry te = (TimerEntry) parent.getTag();
+		return te;
 	}
 
 	private void fillTimerList(final Context context) {
@@ -104,6 +125,30 @@ public class MainActivity extends Activity {
 		task.execute();
 	}
 
+	private void startTimerUpdate() {
+		updateHandler.removeMessages(MSG_UPDATE);
+		updateHandler.sendEmptyMessageDelayed(MSG_UPDATE, 1000);
+	}
+
+	private void stopTimerUpdate() {
+		updateHandler.removeMessages(MSG_UPDATE);
+	}
+
+	private boolean updateTimerEntries() {
+		boolean cont = false;
+		ListView list = (ListView) findViewById(R.id.timer_list);
+		int first = list.getFirstVisiblePosition();
+		int last = list.getLastVisiblePosition();
+		for (int i = first; i <= last; ++i) {
+			View child = list.getChildAt(i);
+			TimerEntry te = (TimerEntry) child.getTag();
+			cont |= te.updateTimer();
+		}
+
+		return cont;
+	}
+
+	private Handler updateHandler;
 	private CursorAdapter adapter_;
 	private static final String[] projection_ = new String[] {
 		BaseColumns._ID,
