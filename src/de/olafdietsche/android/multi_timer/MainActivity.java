@@ -137,9 +137,8 @@ public class MainActivity extends Activity {
 	private boolean updateTimerEntries() {
 		boolean cont = false;
 		ListView list = (ListView) findViewById(R.id.timer_list);
-		int first = list.getFirstVisiblePosition();
-		int last = list.getLastVisiblePosition();
-		for (int i = first; i <= last; ++i) {
+		int n = list.getChildCount();
+		for (int i = 0; i < n; ++i) {
 			View child = list.getChildAt(i);
 			TimerEntry te = (TimerEntry) child.getTag();
 			cont |= te.updateTimer();
