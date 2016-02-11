@@ -3,21 +3,22 @@
 
 package de.olafdietsche.android.multi_timer;
 
-import java.text.SimpleDateFormat;
-
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class TimerEntry {
-	public TimerEntry(View view, int overdue_color) {
+	public TimerEntry(View view) {
 		timername = (TextView) view.findViewById(R.id.timername);
 		timerduration = (TextView) view.findViewById(R.id.timerduration);
+		getTextColors(timerduration);
 		timerstart = (Button) view.findViewById(R.id.timerstart);
 		timerstop = (Button) view.findViewById(R.id.timerstop);
 		timerpause = (Button) view.findViewById(R.id.timerpause);
 		timerresume = (Button) view.findViewById(R.id.timerresume);
-		this.overdue_color = overdue_color;
 	}
 
 	public void setName(String name) {
@@ -83,13 +84,25 @@ public class TimerEntry {
 		long mins = (Math.abs(duration) / 60) % 60;
 		String s = String.format("%d:%02d:%02d", hours, mins, secs);
 		timerduration.setText(s);
-		if (duration <= 0)
-			timerduration.setTextColor(overdue_color);
+		timerduration.setTextColor(duration > 0 ? textColor : overdueColor);
+	}
+
+	private static void getTextColors(TextView view) {
+		if (textColor != 0)
+			return;
+
+		ColorStateList colors = view.getTextColors();
+		textColor = colors.getDefaultColor();
+
+		Context context = view.getContext();
+		Resources resources = context.getResources();
+		overdueColor = resources.getColor(R.color.timer_overdue);
 	}
 
 	private long duration, remaining, deadline;
-	private int overdue_color;
 	private boolean running, pausing;
 	private TextView timername, timerduration;
 	private Button timerstart, timerstop, timerpause, timerresume;
+
+	private static int textColor = 0, overdueColor;
 }
