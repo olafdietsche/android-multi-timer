@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -41,6 +42,18 @@ public class MainActivity extends Activity {
 					startTimerUpdate();
 			}
 		};
+
+		AbsListView.OnScrollListener listener = new AbsListView.OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				startTimerUpdate();
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		};
+
+		list.setOnScrollListener(listener);
 	}
 
 	@Override
