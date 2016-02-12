@@ -75,28 +75,28 @@ public class MainActivity extends Activity {
 	}
 
 	public void startTimer(View view) {
-		Log.d(TAG, "startTimer");
 		TimerEntry te = getHolder(view);
 		te.startTimer();
+		updateTimerData(view.getContext(), te.getData());
 		startTimerUpdate();
 	}
 
 	public void stopTimer(View view) {
-		Log.d(TAG, "stopTimer");
 		TimerEntry te = getHolder(view);
 		te.stopTimer();
+		updateTimerData(view.getContext(), te.getData());
 	}
 
 	public void pauseTimer(View view) {
-		Log.d(TAG, "pauseTimer");
 		TimerEntry te = getHolder(view);
 		te.pauseTimer();
+		updateTimerData(view.getContext(), te.getData());
 	}
 
 	public void resumeTimer(View view) {
-		Log.d(TAG, "resumeTimer");
 		TimerEntry te = getHolder(view);
 		te.resumeTimer();
+		updateTimerData(view.getContext(), te.getData());
 		startTimerUpdate();
 	}
 
@@ -104,6 +104,13 @@ public class MainActivity extends Activity {
 		View parent = (View) view.getParent();
 		TimerEntry te = (TimerEntry) parent.getTag();
 		return te;
+	}
+
+	private void updateTimerData(final Context context, final TimerTableHelper.Data data) {
+		DatabaseHelper db = new DatabaseHelper(context);
+		TimerTableHelper helper = new TimerTableHelper(db);
+		helper.update(data);
+		fillTimerList(context);
 	}
 
 	private void fillTimerList(final Context context) {

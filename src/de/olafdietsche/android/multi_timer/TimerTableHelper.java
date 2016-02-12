@@ -3,6 +3,7 @@
 
 package de.olafdietsche.android.multi_timer;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -96,6 +97,21 @@ public class TimerTableHelper extends TableHelper {
 
 	public TimerTableHelper(SQLiteOpenHelper dbHelper) {
 		super(dbHelper, TABLE_NAME);
+	}
+
+	public int update(Data data) {
+		ContentValues values = new ContentValues(2);
+		if (data.isPausing())
+			values.put(COLUMN_NAME_REMAINING, data.remaining);
+		else
+			values.put(COLUMN_NAME_REMAINING, (Long) null);
+
+		if (data.isRunning())
+			values.put(COLUMN_NAME_DEADLINE, data.deadline);
+		else
+			values.put(COLUMN_NAME_DEADLINE, (Long) null);
+
+		return update(data.id, values);
 	}
 
 	static final String createTableStmt = "create table timer (" +
