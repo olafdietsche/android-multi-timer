@@ -21,64 +21,74 @@ public class TimerEntry {
 		timerresume = (Button) view.findViewById(R.id.timerresume);
 	}
 
-	public void setName(String name) {
-		timername.setText(name);
+	public TimerEntry(View view, TimerTableHelper.Data data) {
+		this(view);
+		setData(data);
 	}
 
-	public void setDuration(long duration) {
-		this.duration = duration;
-		displayDuration(duration);
+	public TimerTableHelper.Data getData() {
+		return data;
 	}
 
-	public void setRemaining(long remaining) {
-		this.remaining = remaining;
-		displayDuration(remaining);
+	public void setData(TimerTableHelper.Data data) {
+		this.data = data;
+		timername.setText(data.name);
+		if (data.isPausing()) {
+			pauseTimer();
+		} else if (data.isRunning()) {
+			startTimer();
+		} else {
+			stopTimer();
+		}
 	}
 
 	public void startTimer() {
+		data.startTimer();
 		timerstart.setVisibility(View.GONE);
 		timerstop.setVisibility(View.VISIBLE);
 		timerpause.setVisibility(View.VISIBLE);
-		long now = System.currentTimeMillis() / 1000;
-		deadline = now + duration;
-		running = true;
+		timerresume.setVisibility(View.GONE);
+		updateTimer();
 	}
 
 	public void stopTimer() {
+		data.stopTimer();
 		timerstart.setVisibility(View.VISIBLE);
 		timerstop.setVisibility(View.GONE);
 		timerpause.setVisibility(View.GONE);
 		timerresume.setVisibility(View.GONE);
-		running = pausing = false;
+		displayDuration(data.duration);
 	}
 
 	public void pauseTimer() {
+		data.pauseTimer();
+		timerstart.setVisibility(View.GONE);
+		timerstop.setVisibility(View.VISIBLE);
 		timerpause.setVisibility(View.GONE);
 		timerresume.setVisibility(View.VISIBLE);
-		long now = System.currentTimeMillis() / 1000;
-		remaining = deadline - now;
-		pausing = true;
+		displayDuration(data.remaining);
 	}
 
 	public void resumeTimer() {
+		data.resumeTimer();
+		timerstart.setVisibility(View.GONE);
+		timerstop.setVisibility(View.VISIBLE);
 		timerpause.setVisibility(View.VISIBLE);
 		timerresume.setVisibility(View.GONE);
-		long now = System.currentTimeMillis() / 1000;
-		deadline = now + remaining;
-		pausing = false;
+		updateTimer();
 	}
 
 	public boolean updateTimer() {
-		if (!running || pausing)
+		if (!data.isRunning())
 			return false;
 
 		long now = System.currentTimeMillis() / 1000;
-		long remaining = deadline - now;
+		long remaining = data.deadline - now;
 		displayDuration(remaining);
 		return true;
 	}
 
-	public void displayDuration(long duration) {
+	private void displayDuration(long duration) {
 		long hours = Math.abs(duration / 3600);
 		long secs = Math.abs(duration) % 60;
 		long mins = (Math.abs(duration) / 60) % 60;
@@ -99,8 +109,7 @@ public class TimerEntry {
 		overdueColor = resources.getColor(R.color.timer_overdue);
 	}
 
-	private long duration, remaining, deadline;
-	private boolean running, pausing;
+	private TimerTableHelper.Data data;
 	private TextView timername, timerduration;
 	private Button timerstart, timerstop, timerpause, timerresume;
 
