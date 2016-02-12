@@ -29,8 +29,17 @@ public class AddTimerActivity extends Activity {
 
 		String s = timername_.getText().toString();
 		values.put(TimerTableHelper.COLUMN_NAME_NAME, s);
+		long duration = getDuration();
+		values.put(TimerTableHelper.COLUMN_NAME_DURATION, duration);
 
+		helper.insert(values);
+		helper.close();
+		finish();
+	}
+
+	private long getDuration() {
 		long duration = 0;
+		String s;
 		s = timerdurationHours_.getText().toString();
 		if (s.length() > 0)
 			duration += Long.parseLong(s) * 3600;
@@ -43,11 +52,7 @@ public class AddTimerActivity extends Activity {
 		if (s.length() > 0)
 			duration += Long.parseLong(s);
 
-		values.put(TimerTableHelper.COLUMN_NAME_DURATION, duration);
-
-		helper.insert(values);
-		helper.close();
-		finish();
+		return duration;
 	}
 
 	public static void start(Context context) {
