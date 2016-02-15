@@ -12,11 +12,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -31,6 +34,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 
 		ListView list = (ListView) findViewById(R.id.timer_list);
+		list.setOnCreateContextMenuListener(this);
+		list.setItemsCanFocus(true);
 
 		adapter_ = new TimerCursorAdapter(this, null);
 		list.setAdapter(adapter_);
@@ -85,6 +90,38 @@ public class MainActivity extends Activity {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+		Log.d(TAG, "onCreateContextMenu");
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		if (info == null || info.id < 0)
+			return;
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		Log.d(TAG, "onContextItemSelected");
+		switch (item.getItemId()) {
+		case R.id.menu_delete:
+			deleteItem(item);
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+
+	private void deleteItem(MenuItem item) {
+		Log.d(TAG, "deleteItem");
+		DatabaseHelper db = new DatabaseHelper(this);
+		TimerTableHelper helper = new TimerTableHelper(db);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		helper.delete(info.id, null, null);
+		fillTimerList(this);
 	}
 
 	public void startTimer(View view) {

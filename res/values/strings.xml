@@ -4,6 +4,7 @@
 
     <string name="add_timer_title">Add Timer</string>
     <string name="menu_add_timer">Add</string>
+    <string name="menu_delete">Delete</string>
     <string name="action_save">Save</string>
 
     <string name="action_start">Start</string>
