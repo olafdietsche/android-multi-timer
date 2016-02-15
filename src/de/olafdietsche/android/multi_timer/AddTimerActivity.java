@@ -11,15 +11,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import de.olafdietsche.android.widget.DurationEditText;
+
 public class AddTimerActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_timer);
 		timername_ = (EditText) findViewById(R.id.timername);
-		timerdurationHours_ = (EditText) findViewById(R.id.timerduration_hours);
-		timerdurationMinutes_ = (EditText) findViewById(R.id.timerduration_minutes);
-		timerdurationSeconds_ = (EditText) findViewById(R.id.timerduration_seconds);
+		timerduration_ = (DurationEditText) findViewById(R.id.timerduration);
 	}
 
 	public void addTimer(View view) {
@@ -29,7 +29,7 @@ public class AddTimerActivity extends Activity {
 
 		String s = timername_.getText().toString();
 		values.put(TimerTableHelper.COLUMN_NAME_NAME, s);
-		long duration = getDuration();
+		long duration = timerduration_.getDuration();
 		values.put(TimerTableHelper.COLUMN_NAME_DURATION, duration);
 
 		helper.insert(values);
@@ -37,29 +37,12 @@ public class AddTimerActivity extends Activity {
 		finish();
 	}
 
-	private long getDuration() {
-		long duration = 0;
-		String s;
-		s = timerdurationHours_.getText().toString();
-		if (s.length() > 0)
-			duration += Long.parseLong(s) * 3600;
-
-		s = timerdurationMinutes_.getText().toString();
-		if (s.length() > 0)
-			duration += Long.parseLong(s) * 60;
-
-		s = timerdurationSeconds_.getText().toString();
-		if (s.length() > 0)
-			duration += Long.parseLong(s);
-
-		return duration;
-	}
-
 	public static void start(Context context) {
 		Intent intent = new Intent(context, AddTimerActivity.class);
 		context.startActivity(intent);
 	}
 
-	private EditText timername_, timerdurationHours_, timerdurationMinutes_, timerdurationSeconds_;
+	private EditText timername_;
+	private DurationEditText timerduration_;
 	private static final String TAG = MainActivity.class.getName();
 }

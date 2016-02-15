@@ -11,38 +11,12 @@
                   android:layout_height="wrap_content"
                   android:singleLine="true"/>
 
-        <LinearLayout android:orientation="horizontal"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_gravity="center_horizontal">
-
-            <EditText android:id="@+id/timerduration_hours"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:hint="H"
-                      android:inputType="number"
-                      android:singleLine="true"
-                      android:ems="2"
-                      android:maxLength="2"/>
-
-            <EditText android:id="@+id/timerduration_minutes"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:hint="M"
-                      android:inputType="number"
-                      android:singleLine="true"
-                      android:ems="2"
-                      android:maxLength="2"/>
-
-            <EditText android:id="@+id/timerduration_seconds"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:hint="S"
-                      android:inputType="number"
-                      android:singleLine="true"
-                      android:ems="2"
-                      android:maxLength="2"/>
-        </LinearLayout>
+        <de.olafdietsche.android.widget.DurationEditText
+            android:id="@+id/timerduration"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
 
         <Button android:id="@+id/btn_save"
                 android:layout_width="match_parent"
