@@ -3,7 +3,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
-                android:longClickable="true">
+                android:longClickable="true"
+                android:onClick="editItem">
 
         <TextView android:id="@+id/timername"
                   android:layout_width="wrap_content"

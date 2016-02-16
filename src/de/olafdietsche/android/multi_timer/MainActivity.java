@@ -150,9 +150,19 @@ public class MainActivity extends Activity {
 		startTimerUpdate();
 	}
 
+	public void editItem(View view) {
+		TimerEntry te = getHolder(view);
+		TimerTableHelper.Data data = te.getData();
+		EditTimerActivity.start(this, data);
+	}
+
 	private TimerEntry getHolder(View view) {
-		View parent = (View) view.getParent();
-		TimerEntry te = (TimerEntry) parent.getTag();
+		TimerEntry te = (TimerEntry) view.getTag();
+		if (te == null) {
+			View parent = (View) view.getParent();
+			te = (TimerEntry) parent.getTag();
+		}
+
 		return te;
 	}
 

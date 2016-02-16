@@ -17,5 +17,9 @@
                   android:label="@string/add_timer_title"
                   android:windowSoftInputMode="stateVisible"/>
 
+        <activity android:name=".EditTimerActivity"
+                  android:label="@string/edit_timer_title"
+                  android:windowSoftInputMode="stateVisible"/>
+
     </application>
 </manifest>

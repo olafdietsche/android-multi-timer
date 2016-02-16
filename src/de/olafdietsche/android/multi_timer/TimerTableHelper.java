@@ -6,7 +6,9 @@ package de.olafdietsche.android.multi_timer;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.provider.BaseColumns;
+
 import de.olafdietsche.android.database.TableHelper;
 
 public class TimerTableHelper extends TableHelper {
@@ -30,6 +32,19 @@ public class TimerTableHelper extends TableHelper {
 			running = !cursor.isNull(deadlineIndex);
 			if (running)
 				deadline = cursor.getLong(deadlineIndex);
+		}
+
+		public Data(Bundle bundle) {
+			id = bundle.getLong("id");
+			name = bundle.getString("name");
+			duration = bundle.getLong("duration");
+			pausing = bundle.getBoolean("pausing");
+			if (pausing)
+				remaining = bundle.getLong("remaining");
+
+			running = bundle.getBoolean("running");
+			if (running)
+				deadline = bundle.getLong("deadline");
 		}
 
 		public void startTimer() {
@@ -73,6 +88,22 @@ public class TimerTableHelper extends TableHelper {
 			return pausing;
 		}
 
+		public Bundle toBundle() {
+			Bundle bundle = new Bundle(2);
+			bundle.putLong("id", id);
+			bundle.putString("name", name);
+			bundle.putLong("duration", duration);
+			bundle.putLong("remaining", remaining);
+			bundle.putLong("deadline", deadline);
+			bundle.putBoolean("running", running);
+			bundle.putBoolean("pausing", pausing);
+			return bundle;
+		}
+
+		public static Data fromBundle(Bundle bundle) {
+			return new Data(bundle);
+		}
+
 		public String toString() {
 			return "{TimerTableHelper.Data: " + name + ", " + duration + ", " + pausing + "/" + remaining + ", " + running + "/" + deadline + "}";
 		}
@@ -100,7 +131,10 @@ public class TimerTableHelper extends TableHelper {
 	}
 
 	public int update(Data data) {
-		ContentValues values = new ContentValues(2);
+		ContentValues values = new ContentValues(4);
+		values.put(COLUMN_NAME_NAME, data.name);
+		values.put(COLUMN_NAME_DURATION, data.duration);
+
 		if (data.isPausing())
 			values.put(COLUMN_NAME_REMAINING, data.remaining);
 		else
