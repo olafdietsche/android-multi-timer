@@ -17,12 +17,12 @@ public class AddTimerActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_timer);
+		setContentView(R.layout.edit_timer);
 		timername_ = (EditText) findViewById(R.id.timername);
 		timerduration_ = (DurationEditText) findViewById(R.id.timerduration);
 	}
 
-	public void addTimer(View view) {
+	public void saveTimer(View view) {
 		DatabaseHelper db = new DatabaseHelper(this);
 		TimerTableHelper helper = new TimerTableHelper(db);
 		ContentValues values = new ContentValues(2);

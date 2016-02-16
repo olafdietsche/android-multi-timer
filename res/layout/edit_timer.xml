@@ -23,6 +23,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_save"
                 android:textStyle="bold"
-                android:onClick="addTimer"/>
+                android:onClick="saveTimer"/>
     </LinearLayout>
 </ScrollView>
