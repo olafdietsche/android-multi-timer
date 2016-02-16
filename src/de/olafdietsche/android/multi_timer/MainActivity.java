@@ -101,6 +101,10 @@ public class MainActivity extends Activity {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.context_menu, menu);
+
+		TimerEntry te = getHolder(info.targetView);
+		TimerTableHelper.Data data = te.getData();
+		menu.setHeaderTitle(data.name);
 	}
 
 	@Override
