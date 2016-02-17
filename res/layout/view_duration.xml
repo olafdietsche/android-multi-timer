@@ -5,6 +5,7 @@
               android:hint="H"
               android:inputType="number"
               android:singleLine="true"
+              android:selectAllOnFocus="true"
               android:ems="2"
               android:maxLength="2"/>
 
@@ -13,6 +14,7 @@
               android:hint="M"
               android:inputType="number"
               android:singleLine="true"
+              android:selectAllOnFocus="true"
               android:ems="2"
               android:maxLength="2"/>
 
@@ -21,6 +23,7 @@
               android:hint="S"
               android:inputType="number"
               android:singleLine="true"
+              android:selectAllOnFocus="true"
               android:ems="2"
               android:maxLength="2"/>
 </merge>
