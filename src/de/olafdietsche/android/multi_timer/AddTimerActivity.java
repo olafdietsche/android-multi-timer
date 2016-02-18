@@ -28,7 +28,9 @@ public class AddTimerActivity extends Activity {
 		TimerTableHelper.Data data = new TimerTableHelper.Data();
 		data.name = timername_.getText().toString();
 		data.duration = timerduration_.getDuration();
+		data.startTimer();
 		helper.insert(data);
+		db.close();
 		finish();
 	}
 

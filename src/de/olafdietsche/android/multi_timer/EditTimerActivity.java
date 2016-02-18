@@ -39,7 +39,10 @@ public class EditTimerActivity extends Activity {
 			TimerTableHelper helper = new TimerTableHelper(db);
 			data.name = name;
 			data.duration = duration;
+			data.stopTimer();
+			data.startTimer();
 			helper.update(data);
+			db.close();
 		}
 
 		finish();
