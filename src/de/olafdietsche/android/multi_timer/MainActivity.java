@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
 			protected Cursor doInBackground(Void... unused) {
 				DatabaseHelper db = new DatabaseHelper(context);
 				TimerTableHelper helper = new TimerTableHelper(db);
-				Cursor cursor = helper.query(TimerTableHelper.Data.projection, null, null, TimerTableHelper.COLUMN_NAME_NAME);
+				Cursor cursor = helper.query(TimerTableHelper.Data.projection, null, null, TimerTableHelper.COLUMN_NAME_DEADLINE + " is null, " + TimerTableHelper.COLUMN_NAME_DEADLINE + ", " + TimerTableHelper.COLUMN_NAME_NAME);
 				return cursor;
 			}
 
