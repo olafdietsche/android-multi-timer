@@ -25,15 +25,10 @@ public class AddTimerActivity extends Activity {
 	public void saveTimer(View view) {
 		DatabaseHelper db = new DatabaseHelper(this);
 		TimerTableHelper helper = new TimerTableHelper(db);
-		ContentValues values = new ContentValues(2);
-
-		String s = timername_.getText().toString();
-		values.put(TimerTableHelper.COLUMN_NAME_NAME, s);
-		long duration = timerduration_.getDuration();
-		values.put(TimerTableHelper.COLUMN_NAME_DURATION, duration);
-
-		helper.insert(values);
-		helper.close();
+		TimerTableHelper.Data data = new TimerTableHelper.Data();
+		data.name = timername_.getText().toString();
+		data.duration = timerduration_.getDuration();
+		helper.insert(data);
 		finish();
 	}
 

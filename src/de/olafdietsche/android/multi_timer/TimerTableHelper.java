@@ -20,6 +20,9 @@ public class TimerTableHelper extends TableHelper {
 	public static final String COLUMN_NAME_DEADLINE = "deadline";
 
 	public static class Data {
+		public Data() {
+		}
+
 		public Data(Cursor cursor) {
 			id = cursor.getLong(idIndex);
 			name = cursor.getString(nameIndex);
@@ -126,7 +129,7 @@ public class TimerTableHelper extends TableHelper {
 			return "{TimerTableHelper.Data: " + name + ", " + duration + ", " + pausing + "/" + remaining + ", " + running + "/" + deadline + "}";
 		}
 
-		final long id;
+		long id;
 		String name;
 		long duration;
 		long remaining;
@@ -146,6 +149,12 @@ public class TimerTableHelper extends TableHelper {
 
 	public TimerTableHelper(SQLiteOpenHelper dbHelper) {
 		super(dbHelper, TABLE_NAME);
+	}
+
+	public long insert(Data data) {
+		ContentValues values = data.toContentValues();
+		data.id = insert(values);
+		return data.id;
 	}
 
 	public int update(Data data) {
