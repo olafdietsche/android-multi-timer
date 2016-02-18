@@ -100,6 +100,24 @@ public class TimerTableHelper extends TableHelper {
 			return bundle;
 		}
 
+		public ContentValues toContentValues() {
+			ContentValues values = new ContentValues(4);
+			values.put(COLUMN_NAME_NAME, name);
+			values.put(COLUMN_NAME_DURATION, duration);
+
+			if (isPausing())
+				values.put(COLUMN_NAME_REMAINING, remaining);
+			else
+				values.put(COLUMN_NAME_REMAINING, (Long) null);
+
+			if (isRunning())
+				values.put(COLUMN_NAME_DEADLINE, deadline);
+			else
+				values.put(COLUMN_NAME_DEADLINE, (Long) null);
+
+			return values;
+		}
+
 		public static Data fromBundle(Bundle bundle) {
 			return new Data(bundle);
 		}
@@ -131,20 +149,7 @@ public class TimerTableHelper extends TableHelper {
 	}
 
 	public int update(Data data) {
-		ContentValues values = new ContentValues(4);
-		values.put(COLUMN_NAME_NAME, data.name);
-		values.put(COLUMN_NAME_DURATION, data.duration);
-
-		if (data.isPausing())
-			values.put(COLUMN_NAME_REMAINING, data.remaining);
-		else
-			values.put(COLUMN_NAME_REMAINING, (Long) null);
-
-		if (data.isRunning())
-			values.put(COLUMN_NAME_DEADLINE, data.deadline);
-		else
-			values.put(COLUMN_NAME_DEADLINE, (Long) null);
-
+		ContentValues values = data.toContentValues();
 		return update(data.id, values);
 	}
 
