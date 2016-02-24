@@ -190,11 +190,13 @@ public class MainActivity extends Activity {
 
 	private void fillTimerList(final Context context) {
 		AsyncTask<Void, Void, Cursor> task = new AsyncTask<Void, Void, Cursor>() {
+			private static final String sortOrder = TimerTableHelper.COLUMN_NAME_DEADLINE + " is null, " + TimerTableHelper.COLUMN_NAME_DEADLINE + ", " + TimerTableHelper.COLUMN_NAME_REMAINING + " is null, " + TimerTableHelper.COLUMN_NAME_REMAINING + ", " + TimerTableHelper.COLUMN_NAME_NAME;
+
 			@Override
 			protected Cursor doInBackground(Void... unused) {
 				DatabaseHelper db = new DatabaseHelper(context);
 				TimerTableHelper helper = new TimerTableHelper(db);
-				Cursor cursor = helper.query(TimerTableHelper.Data.projection, null, null, TimerTableHelper.COLUMN_NAME_DEADLINE + " is null, " + TimerTableHelper.COLUMN_NAME_DEADLINE + ", " + TimerTableHelper.COLUMN_NAME_NAME);
+				Cursor cursor = helper.query(TimerTableHelper.Data.projection, null, null, sortOrder);
 				return cursor;
 			}
 
