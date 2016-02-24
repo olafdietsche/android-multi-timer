@@ -92,7 +92,7 @@ public class TimerTableHelper extends TableHelper {
 		}
 
 		public Bundle toBundle() {
-			Bundle bundle = new Bundle(2);
+			Bundle bundle = new Bundle(7);
 			bundle.putLong("id", id);
 			bundle.putString("name", name);
 			bundle.putLong("duration", duration);

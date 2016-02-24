@@ -26,10 +26,10 @@ import android.widget.ListView;
 import de.olafdietsche.net.SimpleHttpClient;
 
 public class MainActivity extends Activity {
-	private static final int MSG_UPDATE = 1;
+	public static final String PACKAGE_NAME = MainActivity.class.getPackage().getName();
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
@@ -62,14 +62,14 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onResume() {
+	protected void onResume() {
 		super.onResume();
 		fillTimerList(this);
 		startTimerUpdate();
 	}
 
 	@Override
-	public void onPause() {
+	protected void onPause() {
 		super.onPause();
 		stopTimerUpdate();
 	}
@@ -131,26 +131,37 @@ public class MainActivity extends Activity {
 	public void startTimer(View view) {
 		TimerEntry te = getHolder(view);
 		te.startTimer();
-		updateTimerData(view.getContext(), te.getData());
+		TimerTableHelper.Data data = te.getData();
+		updateTimerData(view.getContext(), data);
+		AlarmReceiver.scheduleAlarm(view.getContext(), data);
 		startTimerUpdate();
 	}
 
 	public void stopTimer(View view) {
 		TimerEntry te = getHolder(view);
 		te.stopTimer();
-		updateTimerData(view.getContext(), te.getData());
+		TimerTableHelper.Data data = te.getData();
+		updateTimerData(view.getContext(), data);
+		AlarmReceiver.cancelAlarm(view.getContext(), data);
 	}
 
 	public void pauseTimer(View view) {
 		TimerEntry te = getHolder(view);
 		te.pauseTimer();
-		updateTimerData(view.getContext(), te.getData());
+		TimerTableHelper.Data data = te.getData();
+		updateTimerData(view.getContext(), data);
+		AlarmReceiver.cancelAlarm(view.getContext(), data);
 	}
 
 	public void resumeTimer(View view) {
 		TimerEntry te = getHolder(view);
 		te.resumeTimer();
-		updateTimerData(view.getContext(), te.getData());
+		TimerTableHelper.Data data = te.getData();
+		updateTimerData(view.getContext(), data);
+		long now = System.currentTimeMillis() / 1000;
+		if (data.deadline > now)
+			AlarmReceiver.scheduleAlarm(view.getContext(), data);
+
 		startTimerUpdate();
 	}
 
@@ -222,4 +233,5 @@ public class MainActivity extends Activity {
 	private CursorAdapter adapter_;
 
 	private static final String TAG = MainActivity.class.getName();
+	private static final int MSG_UPDATE = 1;
 }

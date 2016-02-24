@@ -21,5 +21,6 @@
                   android:label="@string/edit_timer_title"
                   android:windowSoftInputMode="stateVisible"/>
 
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 </manifest>
