@@ -10,7 +10,8 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_alignParentLeft="true"
-                  android:layout_weight="1"/>
+                  android:layout_weight="1"
+                  android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView android:id="@+id/timerduration"
                   android:layout_width="wrap_content"
