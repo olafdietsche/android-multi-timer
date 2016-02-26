@@ -12,10 +12,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 
 public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		acquireWakeLock(context);
 		long id = intent.getLongExtra("id", -1);
 		String title = intent.getStringExtra("name");
 		long when = intent.getLongExtra("deadline", -1);
@@ -62,4 +64,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 		notification.setLatestEventInfo(context, title, message, pendingIntent);
 		return notification;
 	}
+
+	private void acquireWakeLock(Context context) {
+		if (wakelock == null) {
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			wakelock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK |
+						  PowerManager.ACQUIRE_CAUSES_WAKEUP |
+						  PowerManager.ON_AFTER_RELEASE, TAG);
+		}
+
+		wakelock.acquire(WAKELOCK_TIMEOUT);
+	}
+
+	private PowerManager.WakeLock wakelock;
+
+	private static final String TAG = AlarmReceiver.class.getName();
+	private static final long WAKELOCK_TIMEOUT = 15000;
 }
