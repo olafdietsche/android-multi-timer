@@ -25,20 +25,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 	}
 
 	public static void scheduleAlarm(final Context context, final TimerTableHelper.Data data) {
-		PendingIntent pendingIntent = makePendingIntent(context, data);
+		PendingIntent pendingIntent = makeAlarmIntent(context, data);
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		am.set(AlarmManager.RTC_WAKEUP, data.deadline * 1000, pendingIntent);
 	}
 
 	public static void cancelAlarm(final Context context, final TimerTableHelper.Data data) {
-		PendingIntent pendingIntent = makePendingIntent(context, data);
+		PendingIntent pendingIntent = makeAlarmIntent(context, data);
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		am.cancel(pendingIntent);
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel((int) data.id);
 	}
 
-	private static PendingIntent makePendingIntent(final Context context, final TimerTableHelper.Data data) {
+	private static PendingIntent makeAlarmIntent(final Context context, final TimerTableHelper.Data data) {
 		Intent intent = new Intent(context, AlarmReceiver.class);
 		Uri uri = Uri.fromParts("android-app", MainActivity.PACKAGE_NAME + "/" + data.id, null);
 		intent.setData(uri);
@@ -47,14 +47,18 @@ public class AlarmReceiver extends BroadcastReceiver {
 		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 	}
 
-	private static Notification makeNotification(final Context context, final String message, final long when) {
-		Notification notification = new Notification(android.R.drawable.ic_lock_idle_alarm, message, when * 1000);
+	private static PendingIntent makeNotificationIntent(final Context context) {
 		Intent contentIntent = new Intent(context, MainActivity.class);
 		contentIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		PendingIntent pendingIntent =
 			PendingIntent.getActivity(context, 0, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+		return pendingIntent;
+	}
 
+	private static Notification makeNotification(final Context context, final String message, final long when) {
+		Notification notification = new Notification(android.R.drawable.ic_lock_idle_alarm, message, when * 1000);
 		String title = context.getResources().getString(R.string.app_name);
+		PendingIntent pendingIntent = makeNotificationIntent(context);
 		notification.setLatestEventInfo(context, title, message, pendingIntent);
 		return notification;
 	}
