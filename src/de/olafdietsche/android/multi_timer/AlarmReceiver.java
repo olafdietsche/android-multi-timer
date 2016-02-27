@@ -61,6 +61,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	private static Notification makeNotification(final Context context, final String message, final long when) {
 		Notification notification = new Notification(android.R.drawable.ic_lock_idle_alarm, message, when * 1000);
 		notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+		notification.vibrate = new long[]{ 100, 750, 50, 750, 50, 750 };
 		String title = context.getResources().getString(R.string.app_name);
 		PendingIntent pendingIntent = makeNotificationIntent(context);
 		notification.setLatestEventInfo(context, title, message, pendingIntent);
