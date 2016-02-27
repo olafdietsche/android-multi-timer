@@ -5,6 +5,7 @@ package de.olafdietsche.android.multi_timer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,6 +60,14 @@ public class MainActivity extends Activity {
 		};
 
 		list.setOnScrollListener(listener);
+		final Intent intent = getIntent();
+		AlarmReceiver.clearAllNotifications(this, intent);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		Log.d(TAG, "onNewIntent");
+		AlarmReceiver.clearAllNotifications(this, intent);
 	}
 
 	@Override

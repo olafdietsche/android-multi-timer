@@ -41,6 +41,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 		nm.cancel((int) data.id);
 	}
 
+	public static void clearAllNotifications(final Context context, final Intent intent) {
+		boolean clear = intent.getBooleanExtra(EXTRA_CLEAR_NOTIFICATION, false);
+		if (clear) {
+			NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.cancelAll();
+		}
+	}
+
 	private static PendingIntent makeAlarmIntent(final Context context, final TimerTableHelper.Data data) {
 		Intent intent = new Intent(context, AlarmReceiver.class);
 		Uri uri = Uri.fromParts("android-app", MainActivity.PACKAGE_NAME + "/" + data.id, null);
@@ -53,6 +61,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	private static PendingIntent makeNotificationIntent(final Context context) {
 		Intent contentIntent = new Intent(context, MainActivity.class);
 		contentIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		contentIntent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
 		PendingIntent pendingIntent =
 			PendingIntent.getActivity(context, 0, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 		return pendingIntent;
@@ -82,5 +91,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 	private PowerManager.WakeLock wakelock;
 
 	private static final String TAG = AlarmReceiver.class.getName();
+	private static final String EXTRA_CLEAR_NOTIFICATION = MainActivity.PACKAGE_NAME + ".intent.extra.CLEAR_NOTIFICATION";
 	private static final long WAKELOCK_TIMEOUT = 15000;
 }
