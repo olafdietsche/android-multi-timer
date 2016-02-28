@@ -14,14 +14,15 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.BaseColumns;
 
 public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		acquireWakeLock(context);
-		long id = intent.getLongExtra("id", -1);
-		String title = intent.getStringExtra("name");
-		long when = intent.getLongExtra("deadline", -1);
+		long id = intent.getLongExtra(BaseColumns._ID, -1);
+		String title = intent.getStringExtra(TimerTableHelper.COLUMN_NAME_NAME);
+		long when = intent.getLongExtra(TimerTableHelper.COLUMN_NAME_DEADLINE, -1);
 		Notification notification = makeNotification(context, title, when);
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.notify((int) id, notification);

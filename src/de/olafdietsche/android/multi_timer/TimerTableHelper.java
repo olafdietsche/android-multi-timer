@@ -18,6 +18,8 @@ public class TimerTableHelper extends TableHelper {
 	public static final String COLUMN_NAME_DURATION = "duration";
 	public static final String COLUMN_NAME_REMAINING = "remaining";
 	public static final String COLUMN_NAME_DEADLINE = "deadline";
+	private static final String COLUMN_NAME_PAUSING = "pausing";
+	private static final String COLUMN_NAME_RUNNING = "running";
 
 	public static class Data {
 		public Data() {
@@ -38,16 +40,16 @@ public class TimerTableHelper extends TableHelper {
 		}
 
 		public Data(Bundle bundle) {
-			id = bundle.getLong("id");
-			name = bundle.getString("name");
-			duration = bundle.getLong("duration");
-			pausing = bundle.getBoolean("pausing");
+			id = bundle.getLong(BaseColumns._ID);
+			name = bundle.getString(COLUMN_NAME_NAME);
+			duration = bundle.getLong(COLUMN_NAME_DURATION);
+			pausing = bundle.getBoolean(COLUMN_NAME_PAUSING);
 			if (pausing)
-				remaining = bundle.getLong("remaining");
+				remaining = bundle.getLong(COLUMN_NAME_REMAINING);
 
-			running = bundle.getBoolean("running");
+			running = bundle.getBoolean(COLUMN_NAME_RUNNING);
 			if (running)
-				deadline = bundle.getLong("deadline");
+				deadline = bundle.getLong(COLUMN_NAME_DEADLINE);
 		}
 
 		public void startTimer() {
@@ -93,13 +95,13 @@ public class TimerTableHelper extends TableHelper {
 
 		public Bundle toBundle() {
 			Bundle bundle = new Bundle(7);
-			bundle.putLong("id", id);
-			bundle.putString("name", name);
-			bundle.putLong("duration", duration);
-			bundle.putLong("remaining", remaining);
-			bundle.putLong("deadline", deadline);
-			bundle.putBoolean("running", running);
-			bundle.putBoolean("pausing", pausing);
+			bundle.putLong(BaseColumns._ID, id);
+			bundle.putString(COLUMN_NAME_NAME, name);
+			bundle.putLong(COLUMN_NAME_DURATION, duration);
+			bundle.putLong(COLUMN_NAME_REMAINING, remaining);
+			bundle.putLong(COLUMN_NAME_DEADLINE, deadline);
+			bundle.putBoolean(COLUMN_NAME_RUNNING, running);
+			bundle.putBoolean(COLUMN_NAME_PAUSING, pausing);
 			return bundle;
 		}
 
