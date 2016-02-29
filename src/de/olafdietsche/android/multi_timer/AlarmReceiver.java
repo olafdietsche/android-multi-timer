@@ -19,13 +19,11 @@ import android.provider.BaseColumns;
 public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		acquireWakeLock(context);
 		long id = intent.getLongExtra(BaseColumns._ID, -1);
 		String title = intent.getStringExtra(TimerTableHelper.COLUMN_NAME_NAME);
 		long when = intent.getLongExtra(TimerTableHelper.COLUMN_NAME_DEADLINE, -1);
-		Notification notification = makeNotification(context, title, when);
-		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.notify((int) id, notification);
+		acquireWakeLock(context);
+		showNotification(context, id, title, when);
 	}
 
 	public static void scheduleAlarm(final Context context, final TimerTableHelper.Data data) {
@@ -48,6 +46,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 			NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.cancelAll();
 		}
+	}
+
+	private static void showNotification(final Context context, long id, String title, long when) {
+			Notification notification = makeNotification(context, title, when);
+			NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.notify((int) id, notification);
 	}
 
 	private static PendingIntent makeAlarmIntent(final Context context, final TimerTableHelper.Data data) {
