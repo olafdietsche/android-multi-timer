@@ -20,10 +20,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		long id = intent.getLongExtra(BaseColumns._ID, -1);
-		String title = intent.getStringExtra(TimerTableHelper.COLUMN_NAME_NAME);
+		String message = intent.getStringExtra(TimerTableHelper.COLUMN_NAME_NAME);
 		long when = intent.getLongExtra(TimerTableHelper.COLUMN_NAME_DEADLINE, -1);
 		acquireWakeLock(context);
-		showNotification(context, id, title, when);
+		showNotification(context, id, message, when);
 	}
 
 	public static void scheduleAlarm(final Context context, final TimerTableHelper.Data data) {
@@ -48,8 +48,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 		}
 	}
 
-	private static void showNotification(final Context context, long id, String title, long when) {
-			Notification notification = makeNotification(context, title, when);
+	private static void showNotification(final Context context, long id, String message, long when) {
+			Notification notification = makeNotification(context, message, when);
 			NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify((int) id, notification);
 	}
