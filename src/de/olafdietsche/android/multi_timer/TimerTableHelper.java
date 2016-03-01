@@ -161,7 +161,7 @@ public class TimerTableHelper extends TableHelper {
 
 	public int update(Data data) {
 		ContentValues values = data.toContentValues();
-		return update(data.id, values);
+		return update(data.id, values, null, null);
 	}
 
 	static final String createTableStmt = "create table timer (" +
