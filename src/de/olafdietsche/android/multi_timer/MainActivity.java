@@ -141,8 +141,10 @@ public class MainActivity extends Activity {
 		TimerEntry te = getHolder(view);
 		te.startTimer();
 		TimerTableHelper.Data data = te.getData();
-		updateTimerData(view.getContext(), data);
-		AlarmReceiver.scheduleAlarm(view.getContext(), data);
+		Context context = view.getContext();
+		updateTimerData(context, data);
+		AlarmReceiver.scheduleAlarm(context, data);
+		BootCompleteReceiver.enableReceiver(context);
 		startTimerUpdate();
 	}
 
@@ -166,10 +168,13 @@ public class MainActivity extends Activity {
 		TimerEntry te = getHolder(view);
 		te.resumeTimer();
 		TimerTableHelper.Data data = te.getData();
-		updateTimerData(view.getContext(), data);
+		Context context = view.getContext();
+		updateTimerData(context, data);
 		long now = System.currentTimeMillis() / 1000;
-		if (data.deadline > now)
-			AlarmReceiver.scheduleAlarm(view.getContext(), data);
+		if (data.deadline > now) {
+			AlarmReceiver.scheduleAlarm(context, data);
+			BootCompleteReceiver.enableReceiver(context);
+		}
 
 		startTimerUpdate();
 	}

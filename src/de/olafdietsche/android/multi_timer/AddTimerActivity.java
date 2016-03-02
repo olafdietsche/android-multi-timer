@@ -31,7 +31,9 @@ public class AddTimerActivity extends Activity {
 		data.startTimer();
 		helper.insert(data);
 		db.close();
-		AlarmReceiver.scheduleAlarm(view.getContext(), data);
+		Context context = view.getContext();
+		AlarmReceiver.scheduleAlarm(context, data);
+		BootCompleteReceiver.enableReceiver(context);
 		finish();
 	}
 
