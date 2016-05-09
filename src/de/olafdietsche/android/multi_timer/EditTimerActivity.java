@@ -34,15 +34,17 @@ public class EditTimerActivity extends Activity {
 		String name = timername.getText().toString();
 		long duration = timerduration.getDuration();
 
-		if (!name.equals(data.name) || duration != data.duration) {
-			DatabaseHelper db = new DatabaseHelper(this);
-			TimerTableHelper helper = new TimerTableHelper(db);
+		if (!name.equals(data.name) || duration != data.duration || !data.isRunning()) {
 			data.name = name;
 			data.duration = duration;
 			data.stopTimer();
 			data.startTimer();
+
+			DatabaseHelper db = new DatabaseHelper(this);
+			TimerTableHelper helper = new TimerTableHelper(db);
 			helper.update(data);
 			db.close();
+
 			Context context = view.getContext();
 			AlarmReceiver.scheduleAlarm(context, data);
 			BootCompleteReceiver.enableReceiver(context);
