@@ -16,6 +16,7 @@ public class TimerTableHelper extends TableHelper {
 
 	public static final String COLUMN_NAME_NAME = "name";
 	public static final String COLUMN_NAME_DURATION = "duration";
+	public static final String COLUMN_NAME_USAGE = "usage";
 	public static final String COLUMN_NAME_REMAINING = "remaining";
 	public static final String COLUMN_NAME_DEADLINE = "deadline";
 	private static final String COLUMN_NAME_PAUSING = "pausing";
@@ -29,6 +30,7 @@ public class TimerTableHelper extends TableHelper {
 			id = cursor.getLong(idIndex);
 			name = cursor.getString(nameIndex);
 			duration = cursor.getLong(durationIndex);
+			usage = cursor.getLong(usageIndex);
 
 			pausing = !cursor.isNull(remainingIndex);
 			if (pausing)
@@ -43,6 +45,7 @@ public class TimerTableHelper extends TableHelper {
 			id = bundle.getLong(BaseColumns._ID);
 			name = bundle.getString(COLUMN_NAME_NAME);
 			duration = bundle.getLong(COLUMN_NAME_DURATION);
+			usage = bundle.getLong(COLUMN_NAME_USAGE);
 			pausing = bundle.getBoolean(COLUMN_NAME_PAUSING);
 			if (pausing)
 				remaining = bundle.getLong(COLUMN_NAME_REMAINING);
@@ -98,6 +101,7 @@ public class TimerTableHelper extends TableHelper {
 			bundle.putLong(BaseColumns._ID, id);
 			bundle.putString(COLUMN_NAME_NAME, name);
 			bundle.putLong(COLUMN_NAME_DURATION, duration);
+			bundle.putLong(COLUMN_NAME_USAGE, usage);
 			bundle.putLong(COLUMN_NAME_REMAINING, remaining);
 			bundle.putLong(COLUMN_NAME_DEADLINE, deadline);
 			bundle.putBoolean(COLUMN_NAME_RUNNING, running);
@@ -109,6 +113,7 @@ public class TimerTableHelper extends TableHelper {
 			ContentValues values = new ContentValues(4);
 			values.put(COLUMN_NAME_NAME, name);
 			values.put(COLUMN_NAME_DURATION, duration);
+			values.put(COLUMN_NAME_USAGE, usage);
 
 			if (isPausing())
 				values.put(COLUMN_NAME_REMAINING, remaining);
@@ -128,24 +133,26 @@ public class TimerTableHelper extends TableHelper {
 		}
 
 		public String toString() {
-			return "{TimerTableHelper.Data: " + name + ", " + duration + ", " + pausing + "/" + remaining + ", " + running + "/" + deadline + "}";
+			return "{TimerTableHelper.Data: " + name + ", " + duration + ", " + usage + ", " + pausing + "/" + remaining + ", " + running + "/" + deadline + "}";
 		}
 
 		long id;
 		String name;
 		long duration;
+		long usage;
 		long remaining;
 		long deadline;
 		boolean running, pausing;
 
-		private static final int idIndex = 0, nameIndex = 1, durationIndex = 2, remainingIndex = 3, deadlineIndex = 4;
+		private static final int idIndex = 0, nameIndex = 1, durationIndex = 2, usageIndex = 3, remainingIndex = 4, deadlineIndex = 5;
 
 		public static final String[] projection = new String[] {
 			BaseColumns._ID,
-			TimerTableHelper.COLUMN_NAME_NAME,
-			TimerTableHelper.COLUMN_NAME_DURATION,
-			TimerTableHelper.COLUMN_NAME_REMAINING,
-			TimerTableHelper.COLUMN_NAME_DEADLINE,
+			COLUMN_NAME_NAME,
+			COLUMN_NAME_DURATION,
+			COLUMN_NAME_USAGE,
+			COLUMN_NAME_REMAINING,
+			COLUMN_NAME_DEADLINE,
 		};
 	}
 
@@ -164,11 +171,15 @@ public class TimerTableHelper extends TableHelper {
 		return update(data.id, values, null, null);
 	}
 
-	static final String createTableStmt = "create table timer (" +
+	static final String createTableStmt = "create table " + TABLE_NAME + " (" +
 		BaseColumns._ID + " integer primary key," +
 		COLUMN_NAME_NAME + " text not null," +
 		COLUMN_NAME_DURATION + " long not null," +
+		COLUMN_NAME_USAGE + " long not null default 0," +
 		COLUMN_NAME_REMAINING + " long," +
 		COLUMN_NAME_DEADLINE + " long" +
 		")";
+
+	static final String upgradeV2 = "alter table " + TABLE_NAME +
+		" add column " + COLUMN_NAME_USAGE + " long not null default 0";
 }

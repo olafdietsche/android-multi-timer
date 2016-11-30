@@ -141,6 +141,7 @@ public class MainActivity extends Activity {
 		TimerEntry te = getHolder(view);
 		te.startTimer();
 		TimerTableHelper.Data data = te.getData();
+		++data.usage;
 		Context context = view.getContext();
 		updateTimerData(context, data);
 		AlarmReceiver.scheduleAlarm(context, data);
@@ -204,7 +205,12 @@ public class MainActivity extends Activity {
 
 	private void fillTimerList(final Context context) {
 		AsyncTask<Void, Void, Cursor> task = new AsyncTask<Void, Void, Cursor>() {
-			private static final String sortOrder = TimerTableHelper.COLUMN_NAME_DEADLINE + " is null, " + TimerTableHelper.COLUMN_NAME_DEADLINE + ", " + TimerTableHelper.COLUMN_NAME_REMAINING + " is null, " + TimerTableHelper.COLUMN_NAME_REMAINING + ", " + TimerTableHelper.COLUMN_NAME_NAME;
+			private static final String sortOrder = TimerTableHelper.COLUMN_NAME_DEADLINE + " is null, " +
+				TimerTableHelper.COLUMN_NAME_DEADLINE + ", " +
+				TimerTableHelper.COLUMN_NAME_REMAINING + " is null, " +
+				TimerTableHelper.COLUMN_NAME_REMAINING + ", " +
+				TimerTableHelper.COLUMN_NAME_USAGE + " desc, " +
+				TimerTableHelper.COLUMN_NAME_NAME;
 
 			@Override
 			protected Cursor doInBackground(Void... unused) {
